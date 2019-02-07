@@ -5,14 +5,13 @@ SYM_ARCHETYPE            : [Aa][Rr][Cc][Hh][Ee][Tt][Yy][Pp][Ee] ;
 SYM_TEMPLATE             : [Tt][Ee][Mm][Pp][Ll][Aa][Tt][Ee] ;
 SYM_OPERATIONAL_TEMPLATE : [Oo][Pp][Ee][Rr][Aa][Tt][Ii][Oo][Nn][Aa][Ll]'_'[Tt][Ee][Mm][Pp][Ll][Aa][Tt][Ee] ;
 
-SYM_SPECIALIZE  : '\n'[Ss][Pp][Ee][Cc][Ii][Aa][Ll][Ii][SsZz][Ee] ;
-SYM_LANGUAGE    : '\n'[Ll][Aa][Nn][Gg][Uu][Aa][Gg][Ee] ;
-SYM_DESCRIPTION : '\n'[Dd][Ee][Ss][Cc][Rr][Ii][Pp][Tt][Ii][Oo][Nn] ;
-SYM_DEFINITION  : '\n'[Dd][Ee][Ff][Ii][Nn][Ii][Tt][Ii][Oo][Nn] ;
-SYM_RULES       : '\n'[Rr][Uu][Ll][Ee][Ss] ;
-SYM_TERMINOLOGY : '\n'[Tt][Ee][Rr][Mm][Ii][Nn][Oo][Ll][Oo][Gg][Yy] | '\n' [Oo][Nn][Tt][Oo][Ll][Oo][Gg][Yy];
-SYM_ANNOTATIONS : '\n'[Aa][Nn][Nn][Oo][Tt][Aa][Tt][Ii][Oo][Nn][Ss] ;
-SYM_COMPONENT_TERMINOLOGIES : '\n'[Cc][Oo][Mm][Pp][Oo][Nn][Ee][Nn][Tt]'_'[Tt][Ee][Rr][Mm][Ii][Nn][Oo][Ll][Oo][Gg][Ii][Ee][Ss] ;
+SYM_SPECIALIZE  : (CMT_LINE |'\n')[Ss][Pp][Ee][Cc][Ii][Aa][Ll][Ii][SsZz][Ee] ;
+SYM_LANGUAGE    : (CMT_LINE |'\n') [Ll][Aa][Nn][Gg][Uu][Aa][Gg][Ee] ;
+SYM_DESCRIPTION : (CMT_LINE |'\n')[Dd][Ee][Ss][Cc][Rr][Ii][Pp][Tt][Ii][Oo][Nn] ;
+SYM_DEFINITION  : (CMT_LINE |'\n')[Dd][Ee][Ff][Ii][Nn][Ii][Tt][Ii][Oo][Nn] ;
+SYM_RULES       : (CMT_LINE |'\n')[Rr][Uu][Ll][Ee][Ss] ;
+SYM_TERMINOLOGY : (CMT_LINE |'\n')[Tt][Ee][Rr][Mm][Ii][Nn][Oo][Ll][Oo][Gg][Yy] | '\n' [Oo][Nn][Tt][Oo][Ll][Oo][Gg][Yy];
+SYM_ANNOTATIONS : (CMT_LINE |'\n')[Aa][Nn][Nn][Oo][Tt][Aa][Tt][Ii][Oo][Nn][Ss] ;
 
 // CADL keywords
 SYM_EXISTENCE   : [Ee][Xx][Ii][Ss][Tt][Ee][Nn][Cc][Ee] ;
@@ -88,7 +87,7 @@ fragment SYM_TEMPLATE_OVERLAY_ONLY     : [Tt][Ee][Mm][Pp][Ll][Aa][Tt][Ee]'_'[Oo]
 
 WS         : [ \t\r]+    -> channel(HIDDEN) ;
 LINE       : '\n'        -> channel(HIDDEN) ;     // increment line count
-CMT_LINE   : '--' .*? ('\n'|'\r''\n'|'\r')  -> skip ;  // (increment line count)
+CMT_LINE   : '--' ~[\n\r]*? ('\n'|'\r''\n'|'\r')  -> skip ;  // (increment line count)
 
 // ---------- ISO8601 Date/Time values ----------
 
