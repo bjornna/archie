@@ -33,6 +33,9 @@ public class LargeSetOfADLsTest {
         Map<String, ANTLRParserErrors> parseErrors = new LinkedHashMap<>();
 
         for(String file:adlFiles) {
+//            if(!file.contains("review")) {
+//                continue;
+//            }
             try (InputStream stream = getClass().getResourceAsStream("/" + file)) {
                 logger.info("trying to parse " + file);
                 ADL14Parser parser = new ADL14Parser();

@@ -8,13 +8,13 @@ import java.util.Map;
 
 public class TermCodeList {
 
-    private Map<String, TerminologyCode> items;
+    private Map<String, ArchetypeTerm> items;
 
-    public Map<String, TerminologyCode> getItems() {
+    public Map<String, ArchetypeTerm> getItems() {
         return items;
     }
 
-    public void setItems(Map<String, TerminologyCode> items) {
+    public void setItems(Map<String, ArchetypeTerm> items) {
         this.items = items;
     }
 }

@@ -115,7 +115,7 @@ public class AdlOdinToJsonConverter {
                 //interval. TODO: implement interval-object notation in json :)
             }
         } else {
-            output.append("{}");
+            output.append("[]");
         }
     }
 

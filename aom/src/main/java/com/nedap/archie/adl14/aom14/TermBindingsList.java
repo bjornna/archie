@@ -1,18 +1,19 @@
 package com.nedap.archie.adl14.aom14;
 
 import com.nedap.archie.aom.terminology.ArchetypeTerm;
+import com.nedap.archie.base.terminology.TerminologyCode;
 
 import java.util.Map;
 
 public class TermBindingsList {
 
-    private Map<String, ArchetypeTerm> items;
+    private Map<String, TerminologyCode> items;
 
-    public Map<String, ArchetypeTerm> getItems() {
+    public Map<String, TerminologyCode> getItems() {
         return items;
     }
 
-    public void setItems(Map<String, ArchetypeTerm> items) {
+    public void setItems(Map<String, TerminologyCode> items) {
         this.items = items;
     }
 }

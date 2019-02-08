@@ -172,7 +172,7 @@ public class OdinToJsonConverter {
                 //interval. TODO: implement interval-object notation in json :)
             }
         } else {
-            output.append("{}");
+            output.append("[]");
         }
     }
 
