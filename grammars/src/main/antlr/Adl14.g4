@@ -18,8 +18,8 @@ adl: ( archetype) EOF ;
 archetype: 
     SYM_ARCHETYPE meta_data?
     ARCHETYPE_HRID
-    concept_section
     specialization_section?
+    concept_section
     language_section
     description_section
     definition_section

@@ -1,0 +1,38 @@
+archetype (adl_version=1.4; uid=6e7ade43-02ed-4a55-a87a-20533e9f859f)
+	openEHR-EHR-OBSERVATION.barthel.v0
+
+concept
+	[at0000]	-- Barthel index
+language
+	original_language = <[ISO_639-1::en]>
+	
+description
+	original_author = <
+		["name"] = <"Sam Heard">
+		["organisation"] = <"Ocean Informatics">
+		["email"] = <"sam.heard@oceaninformatics.com">
+		["date"] = <"2006-03-22">
+	>
+	
+
+definition
+	ELEMENT[at0008] occurrences matches {0..1} matches {	-- Continence of bowels
+		value matches {
+				0|[local::at0037], 	-- Incontinent (or requires enemas)
+				1|[local::at0044], 	-- Occasional accident
+				2|[local::at0038]  	-- Continent
+		}
+	}	
+		
+
+ontology
+	term_definitions = <
+		["ar-sy"] = <
+			items = <
+				["at0000"] = <
+					text = <"*Barthel index(en)">
+					description = <"*Barthel index score of dependency on help to undertake important activities of daily living (ADL).(en)">
+				>
+			>
+		>
+	>

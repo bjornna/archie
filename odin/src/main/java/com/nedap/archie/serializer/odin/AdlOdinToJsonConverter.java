@@ -32,6 +32,7 @@ public class AdlOdinToJsonConverter {
         //keywords = <"value"> is indistinguishable from keywords = <"value1", "value2">
         objectMapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
         objectMapper.enable(JsonParser.Feature.STRICT_DUPLICATE_DETECTION);
+
     }
 
 
