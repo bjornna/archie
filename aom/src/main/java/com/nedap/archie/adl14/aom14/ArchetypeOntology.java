@@ -17,8 +17,9 @@ public class ArchetypeOntology {
     private List<String> terminologiesAvailable;
     //@XmlElement(name="term_definitions")
     private Map<String, TermCodeList> termDefinitions = new ConcurrentHashMap<>();
-    private TermCodeList constraintDefinitions;
+    private Map<String, TermCodeList> constraintDefinitions;
     private Map<String, TermBindingsList> termBindings = new ConcurrentHashMap<>();
+    private Map<String, ConstraintBindingsList> constraintBindings;
 
 
     public List<String> getTerminologiesAvailable() {
@@ -37,11 +38,11 @@ public class ArchetypeOntology {
         this.termDefinitions = termDefinitions;
     }
 
-    public TermCodeList getConstraintDefinitions() {
+    public Map<String, TermCodeList> getConstraintDefinitions() {
         return constraintDefinitions;
     }
 
-    public void setConstraintDefinitions(TermCodeList constraintDefinitions) {
+    public void setConstraintDefinitions(Map<String, TermCodeList> constraintDefinitions) {
         this.constraintDefinitions = constraintDefinitions;
     }
 
@@ -51,5 +52,13 @@ public class ArchetypeOntology {
 
     public void setTermBindings(Map<String, TermBindingsList> termBindings) {
         this.termBindings = termBindings;
+    }
+
+    public Map<String, ConstraintBindingsList> getConstraintBindings() {
+        return constraintBindings;
+    }
+
+    public void setConstraintBindings(Map<String, ConstraintBindingsList> constraintBindings) {
+        this.constraintBindings = constraintBindings;
     }
 }

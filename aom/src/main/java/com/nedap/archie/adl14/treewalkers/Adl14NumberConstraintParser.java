@@ -168,7 +168,11 @@ public class Adl14NumberConstraintParser extends BaseTreeWalker {
         } else {
             interval = new Interval<>();
             interval.setLower(Double.parseDouble(context.real_value(0).getText()));
-            interval.setUpper(Double.parseDouble(context.real_value(1).getText()));
+            if(context.real_value().size() > 1) {
+                interval.setUpper(Double.parseDouble(context.real_value(1).getText()));
+            } else {
+                interval.setUpper(interval.getLower());
+            }
         }
         if(context.SYM_GT() != null) {//'|>a..b|'
             interval.setLowerIncluded(false);

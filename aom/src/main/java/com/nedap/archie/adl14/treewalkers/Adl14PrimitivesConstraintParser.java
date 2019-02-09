@@ -77,7 +77,7 @@ public class Adl14PrimitivesConstraintParser extends BaseTreeWalker {
         } else if (objectContext.c_boolean() != null) {
             return parseCBoolean(objectContext.c_boolean());
         }
-        return null;
+        throw new IllegalArgumentException("unknown primitive: " + objectContext.getText());
     }
 
     public CBoolean parseCBoolean(Adl14Parser.C_booleanContext booleanContext) {

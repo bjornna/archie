@@ -59,14 +59,17 @@ c_terminology_code: localTermCode | qualifiedTermCode;
 localTermCode: '[' ( ( AC_CODE ( ';' AT_CODE )? ) | AT_CODE ) ']' ;
 
 //TERM_CODE_REF clashes a lot and is needed from within odin, unfortunately. Switching lexer modes might be better
-qualifiedTermCode: '[' identifier '::' ((AT_CODE | identifier) ',' ?)+ ']' | TERM_CODE_REF;
+qualifiedTermCode: '[' identifier '::' (( identifier) ',' ?)* (';' assumed_value)? ']' | TERM_CODE_REF;
 
-identifier: ALPHA_LC_ID | ALPHA_UC_ID;
+assumed_value: identifier;
+identifier: AT_CODE | AC_CODE | ALPHA_LC_ID | ALPHA_UC_ID | INTEGER ;
 
 c_boolean: ( boolean_value | boolean_list_value ) assumed_boolean_value? ;
 assumed_boolean_value: ';' boolean_value ;
 
-c_ordinal: ordinal_term  (',' ordinal_term)*;
+c_ordinal: ordinal_term  (',' ordinal_term)* (';' assumed_ordinal_value)?;
+
+assumed_ordinal_value: INTEGER;
 
 ordinal_term: integer_value '|' c_terminology_code;
 

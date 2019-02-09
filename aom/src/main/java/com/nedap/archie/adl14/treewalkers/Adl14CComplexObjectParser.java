@@ -155,8 +155,9 @@ public class Adl14CComplexObjectParser extends BaseTreeWalker {
         } else if(objectContext.domainSpecificExtension() != null) {
             CComplexObject result = new CComplexObject();
             result.setRmTypeName(objectContext.domainSpecificExtension().type_id().getText()); //TODO!
+            return result;
         }
-        return null;
+        throw new IllegalArgumentException("unknown non-primitive object: " + objectContext.getText());
     }
 
     private CComplexObjectProxy parseCComplexObjectProxy(C_complex_object_proxyContext proxyContext) {
@@ -165,7 +166,9 @@ public class Adl14CComplexObjectParser extends BaseTreeWalker {
         proxy.setOccurrences(this.parseMultiplicityInterval(proxyContext.c_occurrences()));
         proxy.setTargetPath(proxyContext.adl_path().getText());
         proxy.setRmTypeName(proxyContext.type_id().getText());
-        proxy.setNodeId(proxyContext.AT_CODE().getText());
+        if(proxyContext.AT_CODE() != null) {
+            proxy.setNodeId(proxyContext.AT_CODE().getText());
+        } //else we have to generate a node id :)
         return proxy;
     }
 

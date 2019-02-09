@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.nedap.archie.adlparser.antlr.AdlParser.*;
+//import com.nedap.archie.adlparser.antlr.odinParser;
 import org.apache.commons.text.StringEscapeUtils;
 
 import java.util.List;
@@ -112,6 +113,101 @@ public class AdlOdinToJsonConverter {
                 output(listContext);
 
             } else {
+                output.append("{ \"@type\": \"INTERVAL\" ");
+                Primitive_interval_valueContext intervalCtx = primitiveObjectContext.primitive_interval_value();
+
+                if(intervalCtx.date_interval_value() != null) {
+
+                } else if(intervalCtx.duration_interval_value() != null) {
+
+                } else if (intervalCtx.integer_interval_value() != null) {
+                    Integer_interval_valueContext interval = intervalCtx.integer_interval_value();
+                    if(interval.relop() != null) {
+                        String relopText = interval.relop().getText();
+                        if(relopText.contains(">")) {
+                            output.append(",\"lower_unbounded\": \"false\"");
+                            output.append(",\"upper_unbounded\": \"true\"");
+                            output.append(",\"lower\": " + interval.integer_value().get(0).getText());
+                            if(relopText.contains("=")) {
+                                output.append(",\"lower_included\": \"true\"");
+                            } else {
+                                output.append(",\"lower_included\": \"false\"");
+                            }
+                        } else if(relopText.contains("<")) {
+                            output.append(",\"lower_unbounded\": \"true\"");
+                            output.append(",\"upper_unbounded\": \"false\"");
+                            output.append(",\"upper\": " + interval.integer_value().get(0).getText());
+                            if(relopText.contains("=")) {
+                                output.append(",\"upper_included\": \"true\"");
+                            } else {
+                                output.append(",\"upper_included\": \"false\"");
+                            }
+                        }
+                    } else {
+                        output.append(",\"lower_unbounded\": \"false\"");
+                        output.append(",\"upper_unbounded\": \"false\"");
+                        if(interval.SYM_GT() != null) {
+                            output.append(",\"lower_included\": \"false\"");
+                        } else {
+                            output.append(",\"lower_included\": \"true\"");
+                        }
+                        if(interval.SYM_LT() != null) {
+                            output.append(",\"upper_included\": \"false\"");
+                        } else {
+                            output.append(",\"upper_included\": \"true\"");
+                        }
+                        output.append(",\"lower\": " + interval.integer_value().get(0).getText());
+                        output.append(",\"upper\": " + interval.integer_value().get(1).getText());
+
+                    }
+
+                } else if (intervalCtx.real_interval_value() != null) {
+                    Real_interval_valueContext interval = intervalCtx.real_interval_value();
+                    if(interval.relop() != null) {
+                        String relopText = interval.relop().getText();
+                        if(relopText.contains(">")) {
+                            output.append(",\"lower_unbounded\": \"false\"");
+                            output.append(",\"upper_unbounded\": \"true\"");
+                            output.append(",\"lower\": " + interval.real_value().get(0).getText());
+                            if(relopText.contains("=")) {
+                                output.append(",\"lower_included\": \"true\"");
+                            } else {
+                                output.append(",\"lower_included\": \"false\"");
+                            }
+                        } else if(relopText.contains("<")) {
+                            output.append(",\"lower_unbounded\": \"true\"");
+                            output.append(",\"upper_unbounded\": \"false\"");
+                            output.append(",\"upper\": " + interval.real_value().get(0).getText());
+                            if(relopText.contains("=")) {
+                                output.append(",\"upper_included\": \"true\"");
+                            } else {
+                                output.append(",\"upper_included\": \"false\"");
+                            }
+                        }
+                    } else {
+                        output.append(",\"lower_unbounded\": \"false\"");
+                        output.append(",\"upper_unbounded\": \"false\"");
+                        if(interval.SYM_GT() != null) {
+                            output.append(",\"lower_included\": \"false\"");
+                        } else {
+                            output.append(",\"lower_included\": \"true\"");
+                        }
+                        if(interval.SYM_LT() != null) {
+                            output.append(",\"upper_included\": \"false\"");
+                        } else {
+                            output.append(",\"upper_included\": \"true\"");
+                        }
+                        output.append(",\"lower\": " + interval.real_value().get(0).getText());
+                        output.append(",\"upper\": " + interval.real_value().get(1).getText());
+
+                    }
+                } else if(intervalCtx.date_time_interval_value() != null) {
+
+                } else if(intervalCtx.time_interval_value() != null) {
+
+                }
+                output.append("}");
+                //interval. TODO: implement interval-object notation in json :)
                 //interval. TODO: implement interval-object notation in json :)
             }
         } else {

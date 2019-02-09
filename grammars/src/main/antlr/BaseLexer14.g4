@@ -177,7 +177,7 @@ fragment ESCAPE_SEQ: '\\' ['"?abfnrtv\\] ;
 
 // ------------------- character fragments ------------------
 
-fragment NAME_CHAR     : WORD_CHAR | '-' ;
+fragment NAME_CHAR     : WORD_CHAR | [._\-] ;
 fragment WORD_CHAR     : ALPHANUM_CHAR | '_' ;
 fragment ALPHANUM_CHAR : ALPHA_CHAR | DIGIT ;
 

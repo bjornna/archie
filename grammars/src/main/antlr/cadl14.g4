@@ -13,7 +13,7 @@ import adl_rules14, odin14;
 //  ======================= Top-level Objects ========================
 //
 
-domainSpecificExtension: type_id '<' odin_text '>';
+domainSpecificExtension: type_id '<' odin_text? '>';
 
 c_complex_object: type_id (atTypeId)? c_occurrences? ( SYM_MATCHES '{' (c_attribute_def+ | '*') '}' )? ;
 
