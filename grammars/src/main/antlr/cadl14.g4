@@ -33,7 +33,15 @@ c_non_primitive_object:
     | c_archetype_root
     | c_complex_object_proxy
     | archetype_slot
+    | c_ordinal
     ;
+
+
+c_ordinal: ordinal_term  (',' ordinal_term)* (';' assumed_ordinal_value)?;
+
+assumed_ordinal_value: INTEGER;
+
+ordinal_term: integer_value '|' c_terminology_code;
 
 c_archetype_root: SYM_USE_ARCHETYPE type_id '[' AT_CODE (SYM_COMMA archetype_ref)? ']' c_occurrences? ( SYM_MATCHES '{' c_attribute_def+ '}' )? ;
 

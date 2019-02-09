@@ -1,5 +1,6 @@
 package com.nedap.archie.aom;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
 import com.nedap.archie.base.terminology.TerminologyCode;
 
 import java.util.ArrayList;
@@ -94,6 +95,7 @@ public class ResourceDescription extends ArchetypeModelObject {
         this.copyright = copyright;
     }
 
+    @JsonAlias("license")
     public String getLicence() {
         return licence;
     }

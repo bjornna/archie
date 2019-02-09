@@ -19,8 +19,13 @@ public class Adl14TerminologyParser extends BaseTreeWalker {
     }
 
     public ArchetypeTerminology parseTerminology(Terminology_sectionContext context) {
-        ArchetypeOntology terminology = OdinObjectParser.convert(context.odin_text().getText(), ArchetypeOntology.class);
-        return new ArchetypeTerminology();//TODO
+        ArchetypeOntology ontology = OdinObjectParser.convert(context.odin_text().getText(), ArchetypeOntology.class);
+        ArchetypeTerminology terminology = new ArchetypeTerminology();
+        for(String language:ontology.getTermDefinitions().keySet()) {
+            terminology.getTermDefinitions().put(language, ontology.getTermDefinitions().get(language).getItems());
+        }
+        //TODO: term bindings and others
+        return terminology;
     }
 
 }

@@ -1,11 +1,16 @@
 package com.nedap.archie.adl14.treewalkers;
 
+import com.google.common.collect.Lists;
 import com.nedap.archie.adlparser.antlr.Adl14Parser.*;
 import com.nedap.archie.adlparser.treewalkers.BaseTreeWalker;
 import com.nedap.archie.antlr.errors.ANTLRParserErrors;
 import com.nedap.archie.aom.*;
+import com.nedap.archie.aom.primitives.CInteger;
+import com.nedap.archie.aom.primitives.CTerminologyCode;
 import com.nedap.archie.base.Cardinality;
+import com.nedap.archie.base.Interval;
 import com.nedap.archie.base.MultiplicityInterval;
+import com.nedap.archie.base.terminology.TerminologyCode;
 import com.nedap.archie.rules.Assertion;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
@@ -104,12 +109,7 @@ public class Adl14CComplexObjectParser extends BaseTreeWalker {
         ArrayList<CObject> result = new ArrayList<>();
 
         if (objectsContext.c_primitive_object() != null) {
-            if(objectsContext.c_primitive_object().c_ordinal() != null) {
-                //TODO
-                CAttributeTuple tuple = new CAttributeTuple();
-            } else {
-                result.add(primitivesConstraintParser.parsePrimitiveObject(objectsContext.c_primitive_object()));
-            }
+            result.add(primitivesConstraintParser.parsePrimitiveObject(objectsContext.c_primitive_object()));
         } else {
             List<C_non_primitive_object_orderedContext> nonPrimitiveObjectOrderedContext = objectsContext.c_non_primitive_object_ordered();
             if (nonPrimitiveObjectOrderedContext != null) {
@@ -156,6 +156,36 @@ public class Adl14CComplexObjectParser extends BaseTreeWalker {
             CComplexObject result = new CComplexObject();
             result.setRmTypeName(objectContext.domainSpecificExtension().type_id().getText()); //TODO!
             return result;
+        } else if (objectContext.c_ordinal() != null) {
+            C_ordinalContext ordinalContext = objectContext.c_ordinal();
+
+            //TODO: ordinal assumed value
+            CComplexObject ordinal = new CComplexObject(); //create complex object. We'll generate a node id later!
+            ordinal.setRmTypeName("DV_ORDINAL");
+            //plus a tuple
+            CAttributeTuple tuple = new CAttributeTuple();
+            List<CAttribute> members = new ArrayList<>();
+            members.add(new CAttribute("value"));
+            members.add(new CAttribute("symbol"));
+            tuple.setMembers(members);
+
+            for(Ordinal_termContext ordinal_termContext: ordinalContext.ordinal_term()) {
+                long value = Integer.parseInt(ordinal_termContext.integer_value().getText());
+                CPrimitiveTuple primitiveTuple = new CPrimitiveTuple();
+                CInteger cValue = new CInteger();
+                cValue.addConstraint(new Interval<>(value));
+
+                CTerminologyCode cCode = new CTerminologyCode();
+
+                TerminologyCode code = TerminologyCode.createFromString(ordinal_termContext.c_terminology_code().getText());
+                cCode.addConstraint(code.getCodeString());
+
+                primitiveTuple.addMember(cValue);
+                primitiveTuple.addMember(cCode);
+                tuple.addTuple(primitiveTuple);
+            }
+            ordinal.addAttributeTuple(tuple);
+            return ordinal;
         }
         throw new IllegalArgumentException("unknown non-primitive object: " + objectContext.getText());
     }

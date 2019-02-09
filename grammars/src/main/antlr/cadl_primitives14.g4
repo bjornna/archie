@@ -22,7 +22,6 @@ c_primitive_object:
     | c_duration
     | c_string
     | c_terminology_code
-    | c_ordinal
     | c_boolean
     ;
 
@@ -66,12 +65,6 @@ identifier: AT_CODE | AC_CODE | ALPHA_LC_ID | ALPHA_UC_ID | INTEGER ;
 
 c_boolean: ( boolean_value | boolean_list_value ) assumed_boolean_value? ;
 assumed_boolean_value: ';' boolean_value ;
-
-c_ordinal: ordinal_term  (',' ordinal_term)* (';' assumed_ordinal_value)?;
-
-assumed_ordinal_value: INTEGER;
-
-ordinal_term: integer_value '|' c_terminology_code;
 
 adl_path          : ADL_PATH;
 
