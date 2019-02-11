@@ -1,17 +1,22 @@
 package com.nedap.archie.adl14.treewalkers;
 
 import com.google.common.collect.Lists;
+import com.nedap.archie.adl14.aom14.CDVQuantity;
+import com.nedap.archie.adl14.aom14.CDVQuantityItem;
 import com.nedap.archie.adlparser.antlr.Adl14Parser.*;
 import com.nedap.archie.adlparser.treewalkers.BaseTreeWalker;
 import com.nedap.archie.antlr.errors.ANTLRParserErrors;
 import com.nedap.archie.aom.*;
 import com.nedap.archie.aom.primitives.CInteger;
+import com.nedap.archie.aom.primitives.CReal;
+import com.nedap.archie.aom.primitives.CString;
 import com.nedap.archie.aom.primitives.CTerminologyCode;
 import com.nedap.archie.base.Cardinality;
 import com.nedap.archie.base.Interval;
 import com.nedap.archie.base.MultiplicityInterval;
 import com.nedap.archie.base.terminology.TerminologyCode;
 import com.nedap.archie.rules.Assertion;
+import com.nedap.archie.serializer.odin.OdinObjectParser;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
 import java.util.ArrayList;
@@ -154,7 +159,51 @@ public class Adl14CComplexObjectParser extends BaseTreeWalker {
             return parseArchetypeSlot(objectContext.archetype_slot());
         } else if(objectContext.domainSpecificExtension() != null) {
             CComplexObject result = new CComplexObject();
-            result.setRmTypeName(objectContext.domainSpecificExtension().type_id().getText()); //TODO!
+            String type = objectContext.domainSpecificExtension().type_id().getText();
+            if(type.equalsIgnoreCase("C_DV_QUANTITY")) {
+                result.setRmTypeName("DV_QUANTITY");
+                if(objectContext.domainSpecificExtension().odin_text() != null) {
+                    CDVQuantity cdvQuantity = OdinObjectParser.convert(objectContext.domainSpecificExtension().odin_text().getText(), CDVQuantity.class);
+                    if (cdvQuantity.getList() != null && !cdvQuantity.getList().isEmpty()) {
+                        CAttributeTuple tuple = new CAttributeTuple();
+                        CDVQuantityItem firstItem = cdvQuantity.getList().values().iterator().next();
+                        if (firstItem.getMagnitude() != null) {
+                            tuple.addMember(new CAttribute("magnitude"));
+                        }
+                        if (firstItem.getUnits() != null) {
+                            tuple.addMember(new CAttribute("units"));
+                        }
+                        if (firstItem.getPrecision() != null) {
+                            tuple.addMember(new CAttribute("precision"));
+                        }
+                        for (CDVQuantityItem item : cdvQuantity.getList().values()) {
+                            CPrimitiveTuple primitiveTuple = new CPrimitiveTuple();
+                            if (item.getMagnitude() != null) {
+                                CReal magnitude = new CReal();
+                                magnitude.addConstraint(item.getMagnitude());
+                                primitiveTuple.addMember(magnitude);
+                            }
+                            if (item.getUnits() != null) {
+                                CString units = new CString();
+                                units.addConstraint(item.getUnits());
+                                primitiveTuple.addMember(units);
+                            }
+                            if (item.getPrecision() != null) {
+                                CInteger precision = new CInteger();
+                                precision.addConstraint(item.getPrecision());
+                                primitiveTuple.addMember(precision);
+                            }
+                            tuple.addTuple(primitiveTuple);
+                        }
+                        result.addAttributeTuple(tuple);
+                        //TODO: assumed value!?
+                        //TODO: property?
+                    }
+                }
+            } else {
+                throw new IllegalArgumentException("unknown domain specific type: " + type);
+            }
+
             return result;
         } else if (objectContext.c_ordinal() != null) {
             C_ordinalContext ordinalContext = objectContext.c_ordinal();
