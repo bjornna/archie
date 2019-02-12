@@ -54,7 +54,7 @@ public class Adl14CComplexObjectParser extends BaseTreeWalker {
             object.setRmTypeName(context.type_id().getText());
         }
         if(context.atTypeId() != null) {
-            object.setNodeId(context.atTypeId().getText());
+            object.setNodeId(context.atTypeId().AT_CODE().getText());
         }
         //TODO: object.setDeprecated(context.) ?;
         if (context.c_occurrences() != null) {

@@ -67,6 +67,11 @@ public class ADL14Parser {
         walker= new ParseTreeWalker();
         walker.walk(listener, tree);
         Archetype result = listener.getArchetype();
+
+        ADL14NodeIDConverter adl14NodeIDConverter = new ADL14NodeIDConverter(result);
+        adl14NodeIDConverter.convert(); //fixes archetype in place
+
+
         //set some values that are not directly in ODIN or ADL
         ArchetypeParsePostProcesser.fixArchetype(result);
 

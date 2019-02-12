@@ -250,12 +250,16 @@ public class Archetype extends AuthoredResource {
         while(!workList.isEmpty()) {
             CObject cObject = workList.pop();
             if(!Objects.equals(cObject.getNodeId(), AdlCodeDefinitions.PRIMITIVE_NODE_ID)){
-                result.add(cObject.getNodeId());
+                if(cObject.getNodeId() != null) {
+                    result.add(cObject.getNodeId());
+                }
             }
             if(cObject instanceof CTerminologyCode) {
                 CTerminologyCode terminologyCode = (CTerminologyCode) cObject;
                 result.addAll(terminologyCode.getValueSetExpanded());
-                result.add(terminologyCode.getConstraint().get(0));
+                if(!terminologyCode.getConstraint().isEmpty()) {
+                    result.add(terminologyCode.getConstraint().get(0));
+                }
             }
             for(CAttribute attribute:cObject.getAttributes()) {
                 workList.addAll(attribute.getChildren());

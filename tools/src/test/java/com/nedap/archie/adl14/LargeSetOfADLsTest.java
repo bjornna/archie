@@ -2,6 +2,8 @@ package com.nedap.archie.adl14;
 
 import com.nedap.archie.adl14.ADL14Parser;
 import com.nedap.archie.antlr.errors.ANTLRParserErrors;
+import com.nedap.archie.aom.Archetype;
+import com.nedap.archie.serializer.adl.ADLArchetypeSerializer;
 import org.junit.Test;
 import org.reflections.Reflections;
 import org.reflections.scanners.ResourcesScanner;
@@ -33,13 +35,14 @@ public class LargeSetOfADLsTest {
         Map<String, ANTLRParserErrors> parseErrors = new LinkedHashMap<>();
 
         for(String file:adlFiles) {
-//            if(!file.contains("review")) {
-//                continue;
-//            }
+            if(!file.contains("review")) {
+                continue;
+            }
             try (InputStream stream = getClass().getResourceAsStream("/" + file)) {
                 logger.info("trying to parse " + file);
                 ADL14Parser parser = new ADL14Parser();
-                parser.parse(stream);
+                Archetype archetype = parser.parse(stream);
+                System.out.println(ADLArchetypeSerializer.serialize(archetype));
                 if(parser.errorListener.getErrors().getErrors().size() > 0) {
                     parseErrors.put(file, parser.errorListener.getErrors());
                 }
