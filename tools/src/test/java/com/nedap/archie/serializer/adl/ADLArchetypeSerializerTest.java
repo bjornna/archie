@@ -1,8 +1,11 @@
 package com.nedap.archie.serializer.adl;
 
+import com.nedap.archie.adl14.ADL14ConversionConfiguration;
+import com.nedap.archie.adl14.ADL14Parser;
 import com.nedap.archie.adlparser.ADLParser;
 import com.nedap.archie.aom.Archetype;
 import org.junit.Test;
+import org.openehr.referencemodels.BuiltinReferenceModels;
 
 import java.io.IOException;
 
@@ -95,6 +98,21 @@ public class ADLArchetypeSerializerTest {
         assertThat(serialized, containsString("[\"local_name\"] = <\"consultation start time\">"));
    }
 
+   @Test
+   public void serialize14() throws IOException {
+        Archetype archetype  = load14("adl14/entry/evaluation/openEHR-EHR-EVALUATION.test.v0.adl");
+        String serialized = ADLArchetypeSerializer.serialize(archetype);
+        assertThat(serialized, containsString("concept"));
+
+
+   }
+
+   private Archetype load14(String resourceName) throws IOException {
+       ADL14ConversionConfiguration conversionConfiguration = new ADL14ConversionConfiguration();
+       ADL14Parser parser = new ADL14Parser(BuiltinReferenceModels.getMetaModels());
+       return parser.parse(ADLArchetypeSerializer.class.getClassLoader().getResourceAsStream(resourceName), conversionConfiguration);
+
+   }
     private Archetype load(String resourceName) throws IOException {
         return new ADLParser().parse(ADLArchetypeSerializerTest.class.getResourceAsStream(resourceName));
     }

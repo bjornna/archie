@@ -28,7 +28,11 @@ abstract public class ADLArchetypeSerializer<T extends Archetype> {
         } else if (archetype instanceof TemplateOverlay) {
             return new ADLTemplateOverlaySerializer((TemplateOverlay) archetype).serialize();
         } else if (archetype instanceof AuthoredArchetype) {
-            return new ADLAuthoredArchetypeSerializer<>((AuthoredArchetype) archetype).serialize();
+            if("1.4".equals(archetype.getAdlVersion())){
+                return new ADL14ArchetypeSerializer((AuthoredArchetype) archetype).serialize();
+            }else {
+                return new ADLAuthoredArchetypeSerializer<>((AuthoredArchetype) archetype).serialize();
+            }
         }
         throw new AssertionError("Could not serialize archetype of class " +
                 (archetype == null ? null : archetype.getClass().getName()));
