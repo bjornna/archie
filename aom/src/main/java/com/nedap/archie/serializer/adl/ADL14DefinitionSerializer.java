@@ -3,6 +3,7 @@ package com.nedap.archie.serializer.adl;
 import com.nedap.archie.aom.*;
 import com.nedap.archie.aom.primitives.*;
 import com.nedap.archie.serializer.adl.constraints.*;
+import com.nedap.archie.serializer.adl14.constraints.ADL14CComplexObjectSerializer;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -19,7 +20,7 @@ public class ADL14DefinitionSerializer extends ADLDefinitionSerializer {
         constraintSerializers.put(ArchetypeSlot.class, new ArchetypeSlotSerializer(this));
         constraintSerializers.put(CArchetypeRoot.class, new CArchetypeRootSerializer(this));
         constraintSerializers.put(CBoolean.class, new CBooleanSerializer(this));
-        constraintSerializers.put(CComplexObject.class, new CComplexObjectSerializer(this));
+        constraintSerializers.put(CComplexObject.class, new ADL14CComplexObjectSerializer(this));
         constraintSerializers.put(CComplexObjectProxy.class, new CComplexObjectProxySerializer(this));
         constraintSerializers.put(CDate.class, new CDateSerializer(this));
         constraintSerializers.put(CDateTime.class, new CDateTimeSerializer(this));
